@@ -1,5 +1,5 @@
 class ExpendituresController < ApplicationController
-  before_action :require_login
+  before_action :authenticate_user!
 
   def require_login
     unless user_signed_in?
@@ -31,24 +31,28 @@ class ExpendituresController < ApplicationController
   end
 
   def edit
-    @expenditure = Expenditure.find(params[:id])
+      @expenditure = current_user.expenditures.find(params[:id])
   end
 
   def update
-    @expenditure = Expenditure.find(params[:id])
-
-    if @expenditure.update(expenditure_params)
-      redirect_to @expenditure
-    else
-      render 'edit'
-    end
+      @expenditure = current_user.expenditures.find(params[:id])
+      if current_user.id == @expenditure.user_id
+        if @expenditure.update(expenditure_params)
+          redirect_to @expenditure
+        else
+          render 'edit'
+        end
+      end
   end
 
   def destroy
-    @expenditure = Expenditure.find(params[:id])
+    @expenditure = current_user.expenditures.find(params[:id])
+
+    if current_user.id == @expenditure.user_id 
     @expenditure.destroy
 
     redirect_to expenditures_path
+  end
   end
 
   private

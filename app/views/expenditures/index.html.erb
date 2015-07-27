@@ -36,7 +36,7 @@
         <%= link_to 'Expand', expenditure_path(expenditure) %>
       </td>
       <td>
-        <% if current_user.id = expenditure.user_id %>
+        <% if current_user.id == expenditure.user_id %>
             <%= link_to 'Delete', expenditure_path(expenditure), method: :delete, data: { confirm: 'Are you sure?' } %>
             <%= link_to 'Edit', edit_expenditure_path(expenditure) %>
           <%end%>
