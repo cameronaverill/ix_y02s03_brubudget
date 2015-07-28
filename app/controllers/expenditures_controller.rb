@@ -1,12 +1,7 @@
 class ExpendituresController < ApplicationController
-  before_action :authenticate_user!
+  before_action :require_login, only: [:edit, :destroy, :update]
 
-  def require_login
-    unless user_signed_in?
-      flash[:error] = "You must be logged in to access this section"
-      redirect_to new_login_url # halts request cycle
-    end
-  end
+  
 
   def index
     @expenditures = Expenditure.all.order(purchase_date: :desc)
@@ -56,6 +51,16 @@ class ExpendituresController < ApplicationController
   end
 
   private
+
+  def require_login
+
+    #you can do .user and it returns the user
+    unless current_user == Expenditure.find(params[:id]).user
+      flash[:error] = "You must be logged in to access this section"
+      redirect_to expenditures_path # halts request cycle
+    end
+  end
+
     def expenditure_params
       params.require(:expenditure).permit(:name, :price, :quantity, :purchase_date)
     end
