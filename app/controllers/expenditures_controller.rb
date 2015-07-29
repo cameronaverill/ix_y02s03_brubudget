@@ -1,8 +1,6 @@
 class ExpendituresController < ApplicationController
   before_action :require_login, only: [:edit, :destroy, :update]
 
-  
-
   def index
     @expenditures = Expenditure.all.order(purchase_date: :desc)
   end
