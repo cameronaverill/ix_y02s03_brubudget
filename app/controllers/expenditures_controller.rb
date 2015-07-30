@@ -62,4 +62,6 @@ class ExpendituresController < ApplicationController
     def expenditure_params
       params.require(:expenditure).permit(:name, :price, :quantity, :purchase_date)
     end
+
+
 end
